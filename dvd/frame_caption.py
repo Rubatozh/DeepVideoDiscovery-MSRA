@@ -290,6 +290,7 @@ def process_video(
     frame_folder: str,
     output_caption_folder: str,
     subtitle_file_path: str = None,
+    workers: int = 16,
 ):
     caption_ckpt_folder = os.path.join(output_caption_folder, "ckpt")
     os.makedirs(caption_ckpt_folder, exist_ok=True)
@@ -301,7 +302,7 @@ def process_video(
         caption_ckpt_folder=caption_ckpt_folder,
     )
     # ---------------- Parallel captioning --------------- #
-    with mp.Pool(16) as pool:
+    with mp.Pool(workers) as pool:
         results = list(
             tqdm(
                 pool.imap_unordered(caption_clip, clips),
